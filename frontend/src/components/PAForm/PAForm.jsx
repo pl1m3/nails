@@ -2,6 +2,7 @@ import "./PAForm.css"
 import { useState, useEffect } from "react"
 import { fetchGetMasters } from "../../../fetch/fetchGetMasters"
 import { createRequest } from "../../../fetch/fetchCreateRequest"
+import RequestHistory from "../RequestHistory/RequestHistory"
 
 function PAForm() {
     const [masters, setMasters] = useState([])
@@ -122,6 +123,7 @@ function PAForm() {
                     Записаться
                 </button>
             </form>
+        <RequestHistory/>
         </div>
     )
 }

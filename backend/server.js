@@ -5,6 +5,7 @@ import cors from "cors"
 import bodyParser from 'body-parser';
 import { getMasters } from './controllers/getMasters.js';
 import { createRequest } from './controllers/createRequest.js';
+import { requestHistory } from './controllers/requestHistory.js';
 
 const app = express()
 
@@ -23,6 +24,7 @@ app.post('/reg', regForm)
 app.post('/aut', autForm)
 app.get('/getM', getMasters)
 app.post('/request', createRequest); 
+app.post('/history', requestHistory)
 
 app.listen(3000, () => {
     console.log('Server is running on http://localhost:3000')
