@@ -1,8 +1,6 @@
 import { connection } from "../connectionDB.js";
 
 export function getMasters(req, res) {
-
-    console.log('[getMasters] Запрос на получение мастеров');
     
     const sql = `SELECT * FROM master`;
 

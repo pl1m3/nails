@@ -15,20 +15,27 @@ function AutForm() {
     const handlePassword = (e) => { setPassword(e.target.value) }
 
     const submitForm = async (e) => {
-        e.preventDefault()
-        setErr('')
+        e.preventDefault();
+        setErr('');
+
+        if (!login || !password) {
+            return setErr("Все поля должны быть заполнены");
+        }
 
         const result = await fetchAut({ login, password });
 
-        if (result?.success) {
-            console.log("Усешная авторизация");
-            localStorage.setItem('userId', result.user.id);
-            navigate('/pa')
+        if (result.success && result.user) {
+            localStorage.setItem('user', JSON.stringify(result.user));
+
+            if (result.user.id_role === 2) {
+                console.log("Вы администратор");
+                return navigate('/admin');
+            }
+            navigate('/pa');
         } else {
-            setErr("Неверный логин или пароль");
+            setErr(result.error || "Неверный логин или пароль");
         }
     }
-
     return (
         <div className="autFormFull">
             <h2>Авторизация</h2>

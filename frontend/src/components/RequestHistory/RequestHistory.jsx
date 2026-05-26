@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { fetchRequestHistory } from "../../../fetch/fetchRequestHistory";
+import "./RequestHistory.css"
 
 function RequestHistory() {
     const [history, setHistory] = useState([]);
@@ -8,17 +9,15 @@ function RequestHistory() {
     useEffect(() => {
         const loadHistory = async () => {
             try {
-                const currentUserId = localStorage.getItem('userId');
+                const user = JSON.parse(localStorage.getItem('user'))
                 
-                if (!currentUserId) {
+                if (!user) {
                     console.warn('Пользователь не авторизован');
                     setLoading(false);
                     return;
                 }
-
-                const id_user = parseInt(currentUserId);
                 
-                const data = await fetchRequestHistory(id_user);
+                const data = await fetchRequestHistory(user.id);
                 
                 setHistory(Array.isArray(data) ? data : []);
                 
@@ -43,7 +42,7 @@ function RequestHistory() {
         <div>
             <h3>Ваши записи:</h3>
             {history.map((request) => (
-                <div key={request.id}>
+                <div key={request.id} className="historyCard">
                     <p><strong>Дата:</strong> {new Date(request.booking_datetime).toLocaleString('ru-RU')}</p>
                     <p><strong>Мастер (ID):</strong> {request.id_master}</p>
                     <p><strong>Статус (ID):</strong> {request.id_status}</p>

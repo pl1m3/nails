@@ -3,6 +3,7 @@ import { useState, useEffect } from "react"
 import { fetchGetMasters } from "../../../fetch/fetchGetMasters"
 import { createRequest } from "../../../fetch/fetchCreateRequest"
 import RequestHistory from "../RequestHistory/RequestHistory"
+import { Link } from "react-router-dom"
 
 function PAForm() {
     const [masters, setMasters] = useState([])
@@ -40,7 +41,7 @@ function PAForm() {
 
 
         const currentUserId = localStorage.getItem('userId')
-        
+
         if (!currentUserId) {
             alert("Сначала авторизуйтесь!")
             return
@@ -60,7 +61,7 @@ function PAForm() {
 
         try {
             const result = await createRequest(requestData)
-            
+
             if (result.success) {
                 alert("Вы успешно записаны!")
                 setSelectedMasterId('')
@@ -76,17 +77,16 @@ function PAForm() {
     }
 
     if (loading) return <div className="loading">Загрузка мастеров...</div>
-    if (error) return <div className="error">{error}</div>
 
     return (
         <div className="fullForm">
             <h2>Запись к мастеру</h2>
             <form onSubmit={handleSubmit}>
-                
+                {error && <span className="err">{error}</span>}
                 <div className="fullInput">
                     <label>Выберите мастера</label>
-                    <select 
-                        value={selectedMasterId} 
+                    <select
+                        value={selectedMasterId}
                         onChange={(e) => setSelectedMasterId(e.target.value)}
                         required
                     >
@@ -101,8 +101,8 @@ function PAForm() {
 
                 <div className="fullInput">
                     <label>Дата</label>
-                    <input 
-                        type="date" 
+                    <input
+                        type="date"
                         value={date}
                         onChange={(e) => setDate(e.target.value)}
                         required
@@ -110,20 +110,30 @@ function PAForm() {
                 </div>
 
                 <div className="fullInput">
-                    <label>Время</label>
-                    <input 
-                        type="time" 
+                    <label>Время (8:00 - 18:00)</label>
+                    <input
+                        type="time"
                         value={time}
-                        onChange={(e) => setTime(e.target.value)}
+                        onChange={(e) => {
+                            const selectedTime = e.target.value;
+                            if (selectedTime < "08:00" || selectedTime > "18:00") {
+                                setError("Время работы: с 8:00 до 18:00");
+                                setTime("");
+                                return;
+                            }
+                            setError(null);
+                            setTime(selectedTime);
+                        }}
                         required
                     />
                 </div>
-                
-                <button type="submit"> 
+
+                <button type="submit">
                     Записаться
                 </button>
             </form>
-        <RequestHistory/>
+            <Link to={'/aut'}>Вернуться к авторизации</Link>
+            <RequestHistory />
         </div>
     )
 }

@@ -10,7 +10,10 @@ export function autForm(req, res) {
             return console.log(err)
         }
         if (results.length === 0) {
-            return console.log("Неверный логин или пароль")
+            return res.status(401).json({ 
+                success: false, 
+                error: "Неверный логин или пароль" 
+            });
         }
         const user = results[0]
         return res.json({

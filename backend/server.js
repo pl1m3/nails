@@ -6,6 +6,8 @@ import bodyParser from 'body-parser';
 import { getMasters } from './controllers/getMasters.js';
 import { createRequest } from './controllers/createRequest.js';
 import { requestHistory } from './controllers/requestHistory.js';
+import { getAllRequest } from './controllers/getAllRequest.js';
+import { updateStatus } from './controllers/UpdateStatus.js';
 
 const app = express()
 
@@ -25,6 +27,9 @@ app.post('/aut', autForm)
 app.get('/getM', getMasters)
 app.post('/request', createRequest); 
 app.post('/history', requestHistory)
+app.get('/getAllRequest', getAllRequest)
+app.put('/updateStatus', updateStatus)
+
 
 app.listen(3000, () => {
     console.log('Server is running on http://localhost:3000')
